@@ -7,6 +7,10 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+@app.get("/")
+def read_root():
+    return {"message": "Backend ejecutandose"}
+
 app.include_router(items.router)
 
 app.add_middleware(
