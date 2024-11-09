@@ -15,9 +15,15 @@ MYSQL_ADDON_PORT = os.getenv("MYSQL_ADDON_PORT")
 
 DATABASE_URL = f"mysql+pymysql://{MYSQL_ADDON_USER}:{MYSQL_ADDON_PASSWORD}@{MYSQL_ADDON_HOST}:{MYSQL_ADDON_PORT}/{MYSQL_ADDON_DB}"
 
-engine = create_engine(DATABASE_URL)
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+engine = create_engine(
+    DATABASE_URL,
+    pool_size=5,
+    max_overflow=0,
+    pool_timeout=30,  
+    pool_recycle=1800
+)
 
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 def get_db():
